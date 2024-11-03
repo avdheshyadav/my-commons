@@ -1,11 +1,11 @@
-package my.commons.idgen.snowflake;
+package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
 
 /**
  *
  */
-public class SnowflakeIdCreator {
+public class SnfIdCreator {
 
     private static final long EPOCH = 1710209988000L;
     private static final long DEFAULT_MACHINE_ID = 0;
@@ -19,11 +19,11 @@ public class SnowflakeIdCreator {
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
-    public SnowflakeIdCreator() throws IdGenException {
+    public SnfIdCreator() throws IdGenException {
         this(DEFAULT_MACHINE_ID);
     }
 
-    public SnowflakeIdCreator(long machineId) throws IdGenException {
+    public SnfIdCreator(long machineId) throws IdGenException {
         if (machineId > MAX_MACHINE_ID || machineId < 0) {
             throw new IdGenException("machineId > maxMachineId");
         }
@@ -32,6 +32,7 @@ public class SnowflakeIdCreator {
 
     /**
      * @return Long
+     *
      * @throws IdGenException
      */
     public synchronized Long getId() throws IdGenException {
@@ -60,7 +61,7 @@ public class SnowflakeIdCreator {
     }
 
     public static void main(String[] args) throws Exception {
-        SnowflakeIdCreator idGenerator = new SnowflakeIdCreator();
+        SnfIdCreator idGenerator = new SnfIdCreator();
         Long id = idGenerator.getId();
         System.out.println("id:" + id);
         long timestamp = (id >> (MACHINE_ID_BITS+SEQUENCE_BITS)) + EPOCH;
