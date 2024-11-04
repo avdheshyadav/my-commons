@@ -4,6 +4,7 @@
 package my.commons.idgen.snf.impl;
 
 import my.commons.idgen.snf.MachineIdProvider;
+import my.commons.idgen.snf.MachineIdRange;
 
 import java.util.Random;
 
@@ -13,23 +14,24 @@ import java.util.Random;
  */
 public class RandomMachineIdProvider implements MachineIdProvider {
 
-    public static final RandomMachineIdProvider INSTANCE = new RandomMachineIdProvider(0, 1);
+    public static final RandomMachineIdProvider INSTANCE = new RandomMachineIdProvider(MachineIdRange.DEFAULT);
 
-    private static final int DEFAULT_MIN = 0;
-    private static final int DEFAULT_MAX = 1023;
+    private final Random random = new Random();
+    private final long min ;
+    private final long max;
 
-    private int min = DEFAULT_MIN;
-    private int max = DEFAULT_MAX;
 
-    private Random random = new Random();
-
-    public RandomMachineIdProvider(int min, int max) {
-        this.min = min;
-        this.max = max;
+    /**
+     *
+     * @param machineIdRange MachineIdRange
+     */
+    public RandomMachineIdProvider(MachineIdRange machineIdRange) {
+        this.min = machineIdRange.min;
+        this.max = machineIdRange.max;
     }
 
     @Override
     public long getMachineId() {
-        return random.nextInt(max - min) + min;
+        return random.nextLong(max - min) + min;
     }
 }
