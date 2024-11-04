@@ -2,14 +2,14 @@ package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
 
-class SnfIdCreator implements IdCreator {
+class DefaultSnfIdCreator implements IdCreator {
 
     private final SnfIdConfig snfIdConfig;
     private final long machineId;
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
-    SnfIdCreator(SnfIdConfig snfIdConfig) {
+    DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.snfIdConfig = snfIdConfig;
         this.machineId = snfIdConfig.getMachineIdProvider().getMachineId();
     }

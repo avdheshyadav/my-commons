@@ -22,7 +22,7 @@ public class SnfIdGen {
     public synchronized static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
         if (ID_CREATOR == null) {
             SnfIdGen.snfIdConfig = snfIdConfig;
-            ID_CREATOR = new SnfIdCreator(snfIdConfig);
+            ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
         } else {
             throw new IdGenException("IdGen already registered");
         }
