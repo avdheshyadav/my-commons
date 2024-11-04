@@ -2,46 +2,35 @@ package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
 
-/**
- *
- */
-public class SnfIdCreator {
-
-    private static final long EPOCH = 1710209988000L;
-    private static final long DEFAULT_MACHINE_ID = 0;
-    private static final long MAX_MACHINE_ID = 1023;
-
-    private static final long MACHINE_ID_BITS = 10;
-    private static final long SEQUENCE_BITS = 12;
-    private static final long SEQUENCE_MASK = 4095;
-
+class SnfIdCreator implements IdCreator {
+    private final long epoch;
     private final long machineId;
+    private final long machineIdBits;
+    private final long sequenceBits;
+    private final long sequenceMask;
+
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
-    public SnfIdCreator() throws IdGenException {
-        this(DEFAULT_MACHINE_ID);
-    }
-
-    public SnfIdCreator(long machineId) throws IdGenException {
-        if (machineId > MAX_MACHINE_ID || machineId < 0) {
-            throw new IdGenException("machineId > maxMachineId");
-        }
+    SnfIdCreator(long epoch, long machineId, long machineIdBits, long sequenceBits, long sequenceMask) {
+        this.epoch = epoch;
         this.machineId = machineId;
+        this.machineIdBits = machineIdBits;
+        this.sequenceBits = sequenceBits;
+        this.sequenceMask = sequenceMask;
     }
 
     /**
      * @return Long
-     *
-     * @throws IdGenException
+     * @throws IdGenException IdGenException
      */
-    public synchronized Long getId() throws IdGenException {
+    public Long createId() throws IdGenException {
         long currentTimeStamp = System.currentTimeMillis();
         if (currentTimeStamp < lastTimestamp) {
             throw new IdGenException("Clock moved backwards.  Refusing to generate id for " + (lastTimestamp - currentTimeStamp) + " milliseconds.");
         }
         if (lastTimestamp == currentTimeStamp) {
-            sequence = (sequence + 1) % SEQUENCE_MASK;
+            sequence = (sequence + 1) % sequenceMask;
             if (sequence == 0) {
                 currentTimeStamp = tilNextMillis(lastTimestamp);
             }
@@ -49,7 +38,8 @@ public class SnfIdCreator {
             sequence = 0;
         }
         lastTimestamp = currentTimeStamp;
-        return ((currentTimeStamp - EPOCH) << (MACHINE_ID_BITS + SEQUENCE_BITS)) | (machineId << SEQUENCE_BITS) | sequence;
+        new SnfId(currentTimeStamp,machineId, sequence);
+        return ((currentTimeStamp - epoch) << (machineIdBits + sequenceBits)) | (machineId << sequenceBits) | sequence;
     }
 
     private long tilNextMillis(long lastTimestamp) {
@@ -58,15 +48,5 @@ public class SnfIdCreator {
             timestamp = System.currentTimeMillis();
         }
         return timestamp;
-    }
-
-    public static void main(String[] args) throws Exception {
-        SnfIdCreator idGenerator = new SnfIdCreator();
-        Long id = idGenerator.getId();
-        System.out.println("id:" + id);
-        long timestamp = (id >> (MACHINE_ID_BITS+SEQUENCE_BITS)) + EPOCH;
-        long machineId = (id & ((1L << MACHINE_ID_BITS) - 1) << SEQUENCE_BITS) >> SEQUENCE_BITS;
-        long sequence = id & SEQUENCE_MASK;
-        System.out.println("timestamp:" + timestamp + " machineId:" + machineId + " sequence:" + sequence);
     }
 }
