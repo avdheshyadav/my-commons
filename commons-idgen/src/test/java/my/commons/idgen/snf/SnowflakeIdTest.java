@@ -6,7 +6,7 @@ public class SnowflakeIdTest {
 
     public static void main(String[] args) throws Exception{
         System.out.println("---- Inside snowflake Id Test Enter------");
-        DefaultSnfIdConfigImpl defaultConfig = DefaultSnfIdConfigImpl.DEFAULT_CONFIG;
+        SnfIdConfig defaultConfig = DefaultSnfIdConfigImpl.DEFAULT_CONFIG;
         SnfIdGen.registerIdCreator(defaultConfig);
         Long id = SnfIdGen.getId();
         System.out.println("id:" + id);

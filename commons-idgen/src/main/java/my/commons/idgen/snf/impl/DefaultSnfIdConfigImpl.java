@@ -17,7 +17,7 @@ public class DefaultSnfIdConfigImpl implements SnfIdConfig {
     private static final long DEFAULT_SEQUENCE_BITS = 12;
 
     public static final DefaultSnfIdConfigImpl DEFAULT_CONFIG = new DefaultSnfIdConfigImpl(DEFAULT_EPOCH,
-            NetworkInterfaceMachineIdProvider.INSTANCE, DEFAULT_MACHINE_ID_BITS, DEFAULT_SEQUENCE_BITS);
+            RandomMachineIdProvider.INSTANCE, DEFAULT_MACHINE_ID_BITS, DEFAULT_SEQUENCE_BITS);
 
     private final long epoch;
     private final MachineIdProvider machineIdProvider;

@@ -4,7 +4,6 @@
 package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
-import my.commons.idgen.snf.impl.DefaultSnfIdConfigImpl;
 import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
 
 /**
@@ -13,7 +12,7 @@ import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
  */
 public class SnfIdGen {
 
-    private static DefaultSnfIdConfigImpl snfIdConfig;
+    private static SnfIdConfig snfIdConfig;
 
     private static SnfIdCreator ID_CREATOR;
 
@@ -21,7 +20,7 @@ public class SnfIdGen {
      * @param snfIdConfig SnfIdConfig
      * @throws Exception Exception
      */
-    public synchronized static void registerIdCreator(DefaultSnfIdConfigImpl snfIdConfig) throws Exception {
+    public synchronized static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
         if (ID_CREATOR == null) {
             SnfIdGen.snfIdConfig = snfIdConfig;
             ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);

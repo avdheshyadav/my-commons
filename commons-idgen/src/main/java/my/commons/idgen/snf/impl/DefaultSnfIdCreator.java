@@ -1,18 +1,18 @@
 package my.commons.idgen.snf.impl;
 
 import my.commons.idgen.IdGenException;
+import my.commons.idgen.snf.SnfIdConfig;
 import my.commons.idgen.snf.SnfIdCreator;
 
 public class DefaultSnfIdCreator implements SnfIdCreator {
 
-    private final DefaultSnfIdConfigImpl snfIdConfig;
-    private final long machineId;
+    private final SnfIdConfig snfIdConfig;
+
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
-    public DefaultSnfIdCreator(DefaultSnfIdConfigImpl snfIdConfig) {
+    public DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.snfIdConfig = snfIdConfig;
-        this.machineId = snfIdConfig.getMachineId();
     }
 
     /**
@@ -33,7 +33,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
             sequence = 0;
         }
         lastTimestamp = currentTimeStamp;
-        return ((currentTimeStamp - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (machineId << snfIdConfig.getSequenceBits()) | sequence;
+        return ((currentTimeStamp - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfIdConfig.getMachineId() << snfIdConfig.getSequenceBits()) | sequence;
     }
 
     private long tilNextMillis(long lastTimestamp) {
