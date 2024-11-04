@@ -1,10 +1,12 @@
 package my.commons.idgen.snf;
 
+import my.commons.idgen.snf.impl.DefaultSnfIdConfigImpl;
+
 public class SnowflakeIdTest {
 
     public static void main(String[] args) throws Exception{
         System.out.println("---- Inside snowflake Id Test Enter------");
-        SnfIdConfig defaultConfig = SnfIdConfig.DEFAULT_CONFIG;
+        DefaultSnfIdConfigImpl defaultConfig = DefaultSnfIdConfigImpl.DEFAULT_CONFIG;
         SnfIdGen.registerIdCreator(defaultConfig);
         Long id = SnfIdGen.getId();
         System.out.println("id:" + id);

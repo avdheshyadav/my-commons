@@ -5,7 +5,7 @@ package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
 
-public interface IdCreator {
+public interface SnfIdCreator {
 
     Long createId() throws IdGenException;
 }
