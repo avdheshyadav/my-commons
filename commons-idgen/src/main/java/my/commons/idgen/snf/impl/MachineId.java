@@ -11,19 +11,27 @@ import my.commons.idgen.snf.MachineIdProvider;
  * 04/11/24
  */
 public class MachineId {
-    public static final MachineId DEFAULT_MACHINE_ID = new MachineId(12, RandomMachineIdProvider.INSTANCE);
+    public static final long DEFAULT_MACHINE_ID_BITS = 12;
+    public static final MachineId DEFAULT_MACHINE_ID = new MachineId(DEFAULT_MACHINE_ID_BITS);
 
     @Getter
     private final long machineIdBits;
-    private final MachineIdProvider machineIdProvider;
+    private final long maxMachineId;
+    private MachineIdProvider machineIdProvider = RandomMachineIdProvider.INSTANCE;
+
+    public MachineId(long machineIdBits) {
+        this.machineIdBits = machineIdBits;
+        this.maxMachineId =  (1L << machineIdBits) - 1;
+    }
 
     /**
      *
-     * @param machineIdBits long
-     * @param machineIdProvider MachineIdProvider
+     * @param machineIdBits
+     *
+     * @param machineIdProvider
      */
     public MachineId(long machineIdBits, MachineIdProvider machineIdProvider) {
-        this.machineIdBits = machineIdBits;
+        this(machineIdBits);
         this.machineIdProvider = machineIdProvider;
     }
 
@@ -31,6 +39,6 @@ public class MachineId {
      * @return long
      */
     public long getMachineId() {
-        return machineIdProvider.getMachineId();
+        return machineIdProvider.getMachineId(0, maxMachineId);
     }
 }

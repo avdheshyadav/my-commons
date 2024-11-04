@@ -9,5 +9,5 @@ package my.commons.idgen.snf;
  */
 public interface MachineIdProvider {
 
-    long getMachineId() throws RuntimeException;
+    long getMachineId(long minMachineId, long maxMachineId) throws RuntimeException;
 }

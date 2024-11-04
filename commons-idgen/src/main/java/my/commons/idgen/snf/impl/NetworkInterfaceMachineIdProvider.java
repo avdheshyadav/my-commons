@@ -4,7 +4,6 @@
 package my.commons.idgen.snf.impl;
 
 import my.commons.idgen.snf.MachineIdProvider;
-import my.commons.idgen.snf.MachineIdRange;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -15,21 +14,10 @@ import java.net.NetworkInterface;
  */
 public class NetworkInterfaceMachineIdProvider implements MachineIdProvider {
 
-    public static final NetworkInterfaceMachineIdProvider INSTANCE = new NetworkInterfaceMachineIdProvider(MachineIdRange.DEFAULT);
-
-    private long min;
-    private long max;
-
-    /**
-     * @param machineIdRange MachineIdRange
-     */
-    public NetworkInterfaceMachineIdProvider(MachineIdRange machineIdRange) {
-        this.min = machineIdRange.min;
-        this.max = machineIdRange.max;
-    }
+    public static final NetworkInterfaceMachineIdProvider INSTANCE = new NetworkInterfaceMachineIdProvider();
 
     @Override
-    public long getMachineId() throws RuntimeException {
+    public long getMachineId(long min, long max) throws RuntimeException {
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);

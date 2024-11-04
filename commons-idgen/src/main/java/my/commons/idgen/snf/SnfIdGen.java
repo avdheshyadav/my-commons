@@ -11,9 +11,7 @@ import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
  * 04/11/24
  */
 public class SnfIdGen {
-
     private static SnfIdConfig snfIdConfig;
-
     private static SnfIdCreator ID_CREATOR;
 
     /**
