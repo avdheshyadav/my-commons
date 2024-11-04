@@ -14,7 +14,7 @@ import java.util.Objects;
  * 04/11/24
  */
 @Getter
-public class SnfId implements Serializable {
+public class SnfId implements Serializable, Comparable<SnfId> {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -48,5 +48,15 @@ public class SnfId implements Serializable {
                 ", machineId=" + machineId +
                 ", sequence=" + sequence +
                 '}';
+    }
+
+    @Override
+    public int compareTo(SnfId o) {
+        if (this.timestamp > o.timestamp || (timestamp == o.timestamp && this.machineId == o.machineId && this.sequence > o.sequence)) {
+            return 1;
+        } else if (this.timestamp < o.timestamp) {
+            return -1;
+        }
+        return 0;
     }
 }
