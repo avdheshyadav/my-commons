@@ -22,16 +22,7 @@ public class SnfIdGen {
     public synchronized static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
         if (ID_CREATOR == null) {
             SnfIdGen.snfIdConfig = snfIdConfig;
-            long machineId = snfIdConfig.getMachineIdProvider().getMachineId();
-            registerIdCreator(snfIdConfig.getEpoch(), machineId, snfIdConfig.getMachineIdBits(), snfIdConfig.getSequenceBits(), snfIdConfig.getSequenceMask());
-        } else {
-            throw new IdGenException("IdGen already registered");
-        }
-    }
-
-    public synchronized static void registerIdCreator(long epoch, long machineId, long machineBits, long sequenceBits, long sequenceMask) throws Exception {
-        if (ID_CREATOR == null) {
-            ID_CREATOR = new SnfIdCreator(epoch, machineId, machineBits, sequenceBits, sequenceMask);
+            ID_CREATOR = new SnfIdCreator(snfIdConfig);
         } else {
             throw new IdGenException("IdGen already registered");
         }

@@ -42,15 +42,6 @@ public class SnfId implements Serializable, Comparable<SnfId> {
     }
 
     @Override
-    public String toString() {
-        return "SnfId{" +
-                "timestamp=" + timestamp +
-                ", machineId=" + machineId +
-                ", sequence=" + sequence +
-                '}';
-    }
-
-    @Override
     public int compareTo(SnfId o) {
         if (this.timestamp > o.timestamp || (timestamp == o.timestamp && this.machineId == o.machineId && this.sequence > o.sequence)) {
             return 1;
@@ -58,5 +49,14 @@ public class SnfId implements Serializable, Comparable<SnfId> {
             return -1;
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "SnfId{" +
+                "timestamp=" + timestamp +
+                ", machineId=" + machineId +
+                ", sequence=" + sequence +
+                '}';
     }
 }

@@ -15,7 +15,7 @@ public class NetworkInterfaceMachineIdProvider implements MachineIdProvider {
     public static final NetworkInterfaceMachineIdProvider INSTANCE = new NetworkInterfaceMachineIdProvider();
 
     @Override
-    public long getMachineId() throws Exception {
+    public long getMachineId() throws RuntimeException {
         try {
             InetAddress ip = InetAddress.getLocalHost();
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
@@ -28,7 +28,7 @@ public class NetworkInterfaceMachineIdProvider implements MachineIdProvider {
             }
             return id;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 }
