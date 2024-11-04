@@ -8,5 +8,6 @@ package my.commons.idgen.snf;
  * 04/11/24
  */
 public interface MachineIdProvider {
+
     long getMachineId() throws RuntimeException;
 }

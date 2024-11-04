@@ -13,22 +13,21 @@ import my.commons.idgen.snf.SnfIdConfig;
 public class DefaultSnfIdConfigImpl implements SnfIdConfig {
 
     private static final long DEFAULT_EPOCH = 1710209988000L;
-    private static final long DEFAULT_MACHINE_ID_BITS = 10;
     private static final long DEFAULT_SEQUENCE_BITS = 12;
 
-    public static final DefaultSnfIdConfigImpl DEFAULT_CONFIG = new DefaultSnfIdConfigImpl(DEFAULT_EPOCH,
-            RandomMachineIdProvider.INSTANCE, DEFAULT_MACHINE_ID_BITS, DEFAULT_SEQUENCE_BITS);
+    public static final DefaultSnfIdConfigImpl DEFAULT_CONFIG = new DefaultSnfIdConfigImpl(DEFAULT_EPOCH, MachineId.DEFAULT_MACHINE_ID, DEFAULT_SEQUENCE_BITS);
 
     private final long epoch;
-    private final MachineIdProvider machineIdProvider;
+    private final long machineId;
     private final long machineIdBits;
     private final long sequenceBits;
     private final long sequenceMask;
 
-    public DefaultSnfIdConfigImpl(long epoch, MachineIdProvider machineIdProvider, long machineIdBits, long sequenceBits) {
+
+    public DefaultSnfIdConfigImpl(long epoch, MachineId machineId, long sequenceBits) {
         this.epoch = epoch;
-        this.machineIdProvider = machineIdProvider;
-        this.machineIdBits = machineIdBits;
+        this.machineId = machineId.getMachineId();
+        this.machineIdBits = machineId.getMachineIdBits();
         this.sequenceBits = sequenceBits;
         this.sequenceMask = (1L << sequenceBits) - 1;
     }
@@ -45,7 +44,7 @@ public class DefaultSnfIdConfigImpl implements SnfIdConfig {
 
     @Override
     public long getMachineId() {
-        return machineIdProvider.getMachineId();
+        return machineId;
     }
 
     @Override
