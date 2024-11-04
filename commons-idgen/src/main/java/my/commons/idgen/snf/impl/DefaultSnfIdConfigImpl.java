@@ -3,7 +3,6 @@
  */
 package my.commons.idgen.snf.impl;
 
-import my.commons.idgen.snf.MachineIdProvider;
 import my.commons.idgen.snf.SnfIdConfig;
 
 /**
