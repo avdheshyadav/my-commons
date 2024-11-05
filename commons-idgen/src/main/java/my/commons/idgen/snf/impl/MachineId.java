@@ -12,8 +12,8 @@ import my.commons.idgen.snf.MachineIdProvider;
  * 04/11/24
  */
 public class MachineId {
-    public static final long DEFAULT_MACHINE_ID_BITS = 10;
-    public static final MachineId DEFAULT_MACHINE_ID = new MachineId(DEFAULT_MACHINE_ID_BITS);
+    public static final long DEF_MACHINE_ID_BITS = 10;
+    public static final MachineId DEF_MACHINE_ID = new MachineId(DEF_MACHINE_ID_BITS);
 
     @Getter
     private final long machineIdBits;

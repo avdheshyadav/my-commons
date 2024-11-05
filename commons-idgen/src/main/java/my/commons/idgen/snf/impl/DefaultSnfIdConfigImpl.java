@@ -11,10 +11,10 @@ import my.commons.idgen.snf.SnfIdConfig;
  */
 public class DefaultSnfIdConfigImpl implements SnfIdConfig {
 
-    public static final long DEFAULT_EPOCH = 1710209988000L;
-    public static final long DEFAULT_SEQUENCE_BITS = 12;
+    public static final long DEF_EPOCH = 1710209988000L;
+    public static final long DEF_SEQUENCE_BITS = 12;
 
-    public static final DefaultSnfIdConfigImpl DEFAULT_CONFIG = new DefaultSnfIdConfigImpl(DEFAULT_EPOCH, MachineId.DEFAULT_MACHINE_ID, DEFAULT_SEQUENCE_BITS);
+    public static final DefaultSnfIdConfigImpl DEFAULT_CONFIG = new DefaultSnfIdConfigImpl(DEF_EPOCH, MachineId.DEF_MACHINE_ID, DEF_SEQUENCE_BITS);
 
     private final long epoch;
     private final long machineId;

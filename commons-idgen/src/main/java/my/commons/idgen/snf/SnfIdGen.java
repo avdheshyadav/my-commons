@@ -4,6 +4,7 @@
 package my.commons.idgen.snf;
 
 import my.commons.idgen.IdGenException;
+import my.commons.idgen.snf.impl.DefaultSnfIdConfigImpl;
 import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
 
 /**
@@ -14,20 +15,10 @@ public class SnfIdGen {
     private static SnfIdConfig snfIdConfig;
     private static SnfIdCreator ID_CREATOR;
 
-    /**
-     * @param snfIdConfig SnfIdConfig
-     * @throws Exception Exception
-     */
-    public synchronized static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
-        if (ID_CREATOR == null) {
-            SnfIdGen.snfIdConfig = snfIdConfig;
-            ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
-        } else {
-            throw new IdGenException("IdGen already registered");
-        }
-    }
-
     public static Long getId() throws IdGenException {
+        if (ID_CREATOR == null) {
+            init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
+        }
         return ID_CREATOR.createId();
     }
 
@@ -40,5 +31,20 @@ public class SnfIdGen {
         long machineId = (id & ((1L << snfIdConfig.getMachineIdBits()) - 1) << snfIdConfig.getSequenceBits()) >> snfIdConfig.getSequenceBits();
         long sequence = id & snfIdConfig.getSequenceMask();
         return new SnfId(timestamp, machineId, sequence);
+    }
+
+    public static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
+        if (ID_CREATOR == null) {
+            init(snfIdConfig);
+        }
+    }
+
+    private synchronized static void init(SnfIdConfig snfIdConfig) throws IdGenException {
+        if (ID_CREATOR == null) {
+            SnfIdGen.snfIdConfig = snfIdConfig;
+            ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
+        } else {
+            throw new IdGenException("IdGen already registered");
+        }
     }
 }
