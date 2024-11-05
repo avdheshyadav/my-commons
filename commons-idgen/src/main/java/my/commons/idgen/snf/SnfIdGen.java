@@ -17,7 +17,11 @@ public class SnfIdGen {
 
     public static Long getId() throws IdGenException {
         if (ID_CREATOR == null) {
-            init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
+            try {
+                init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
+            }catch (IdGenException id){
+                System.out.println("Id Creator already initialized");
+            }
         }
         return ID_CREATOR.createId();
     }
@@ -36,6 +40,8 @@ public class SnfIdGen {
     public static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
         if (ID_CREATOR == null) {
             init(snfIdConfig);
+        }else{
+            System.out.println("Id Creator already initialized.");
         }
     }
 
@@ -43,6 +49,7 @@ public class SnfIdGen {
         if (ID_CREATOR == null) {
             SnfIdGen.snfIdConfig = snfIdConfig;
             ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
+            System.out.println("Id Creator initialized By: " + Thread.currentThread().getName());
         } else {
             throw new IdGenException("IdGen already registered");
         }
