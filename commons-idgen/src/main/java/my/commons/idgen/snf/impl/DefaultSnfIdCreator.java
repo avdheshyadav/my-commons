@@ -7,12 +7,14 @@ import my.commons.idgen.snf.SnfIdCreator;
 public class DefaultSnfIdCreator implements SnfIdCreator {
 
     private final SnfIdConfig snfIdConfig;
+    private final long sequenceMask;
 
     private long lastTimestamp = -1L;
     private long sequence = 0L;
 
     public DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.snfIdConfig = snfIdConfig;
+        this.sequenceMask = snfIdConfig.getSequenceMask();
     }
 
     /**
@@ -25,7 +27,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
             throw new IdGenException("Clock moved backwards.  Refusing to generate id for " + (lastTimestamp - currentTimeStamp) + " milliseconds.");
         }
         if (lastTimestamp == currentTimeStamp) {
-            sequence = (sequence + 1) % snfIdConfig.getSequenceMask();
+            sequence = (sequence + 1) % sequenceMask;
             if (sequence == 0) {
                 currentTimeStamp = tilNextMillis(lastTimestamp);
             }
