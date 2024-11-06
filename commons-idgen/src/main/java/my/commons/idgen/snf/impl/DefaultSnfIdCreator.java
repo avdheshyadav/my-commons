@@ -4,13 +4,15 @@ import my.commons.idgen.IdGenException;
 import my.commons.idgen.snf.SnfIdConfig;
 import my.commons.idgen.snf.SnfIdCreator;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class DefaultSnfIdCreator implements SnfIdCreator {
 
     private final SnfIdConfig snfIdConfig;
     private final long sequenceMask;
 
     private long lastTimestamp = -1L;
-    private long sequence = 0L;
+    private final AtomicLong sequence = new AtomicLong(0L);
 
     public DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.snfIdConfig = snfIdConfig;
@@ -27,15 +29,15 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
             throw new IdGenException("Clock moved backwards.  Refusing to generate id for " + (lastTimestamp - currentTimeStamp) + " milliseconds.");
         }
         if (lastTimestamp == currentTimeStamp) {
-            sequence = (sequence + 1) % sequenceMask;
-            if (sequence == 0) {
+            long seq = sequence.incrementAndGet() & sequenceMask;
+            if (seq == 0) {
                 currentTimeStamp = tilNextMillis(lastTimestamp);
             }
         } else {
-            sequence = 0;
+            sequence.set(0L);
         }
         lastTimestamp = currentTimeStamp;
-        return ((currentTimeStamp - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfIdConfig.getMachineId() << snfIdConfig.getSequenceBits()) | sequence;
+        return ((currentTimeStamp - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfIdConfig.getMachineId() << snfIdConfig.getSequenceBits()) | sequence.get();
     }
 
     private long tilNextMillis(long lastTimestamp) {

@@ -14,7 +14,7 @@ public class SnowflakeIdTest {
 
     public static void initTest() throws Exception {
         CountDownLatch idInitLatch = new CountDownLatch(1);
-        int noOfIds = 100;
+        int noOfIds = 1000;
         ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
         ArrayList<Future<ArrayList<SnfId>>> futures = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
