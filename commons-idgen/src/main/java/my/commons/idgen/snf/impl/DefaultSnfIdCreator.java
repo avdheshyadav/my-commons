@@ -31,6 +31,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
         if (lastTimestamp == currentTimeStamp) {
             long seq = sequence.incrementAndGet() & sequenceMask;
             if (seq == 0) {
+                sequence.set(0L);
                 currentTimeStamp = tilNextMillis(lastTimestamp);
             }
         } else {
