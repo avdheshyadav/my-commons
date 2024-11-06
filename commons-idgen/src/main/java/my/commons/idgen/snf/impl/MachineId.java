@@ -4,7 +4,6 @@
 package my.commons.idgen.snf.impl;
 
 import lombok.Getter;
-import lombok.Setter;
 import my.commons.idgen.snf.MachineIdProvider;
 
 /**
@@ -13,18 +12,12 @@ import my.commons.idgen.snf.MachineIdProvider;
  */
 public class MachineId {
     public static final long DEF_MACHINE_ID_BITS = 10;
-    public static final MachineId DEF_MACHINE_ID = new MachineId(DEF_MACHINE_ID_BITS);
+    public static final MachineId DEF_MACHINE_ID = new MachineId(DEF_MACHINE_ID_BITS,RandomMachineIdProvider.INSTANCE);
 
     @Getter
     private final long machineIdBits;
-    private final long maxMachineId;
-    @Setter
-    private MachineIdProvider machineIdProvider = RandomMachineIdProvider.INSTANCE;
-
-    public MachineId(long machineIdBits) {
-        this.machineIdBits = machineIdBits;
-        this.maxMachineId =  (1L << machineIdBits) - 1;
-    }
+    @Getter
+    private final long machineId;
 
     /**
      *
@@ -32,14 +25,8 @@ public class MachineId {
      * @param machineIdProvider MachineIdProvider
      */
     public MachineId(long machineIdBits, MachineIdProvider machineIdProvider) {
-        this(machineIdBits);
-        this.machineIdProvider = machineIdProvider;
-    }
-
-    /**
-     * @return long
-     */
-    public long getMachineId() {
-        return machineIdProvider.getMachineId(0, maxMachineId);
+        this.machineIdBits = machineIdBits;
+        long maxMachineId = (1L << machineIdBits) - 1;
+        this.machineId = machineIdProvider.getMachineId(0, maxMachineId);
     }
 }

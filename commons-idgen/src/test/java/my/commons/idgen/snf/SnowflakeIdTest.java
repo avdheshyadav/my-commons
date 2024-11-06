@@ -14,7 +14,7 @@ public class SnowflakeIdTest {
 
     public static void initTest() throws Exception {
         CountDownLatch idInitLatch = new CountDownLatch(1);
-        int noOfIds = 1000;
+        int noOfIds = 10000;
         ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
         ArrayList<Future<ArrayList<SnfId>>> futures = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -40,6 +40,10 @@ public class SnowflakeIdTest {
 
         for (SnfId snfId : duplicates) {
             System.out.println("Duplicate Id: " + SnfIdGen.getId(snfId) + " snfId:" + snfId);
+        }
+
+        for (SnfId snfId : masterList) {
+            //System.out.println("Master Id: " + SnfIdGen.getId(snfId) + " snfId:" + snfId);
         }
         System.out.println("Master Size: " + masterList.size());
         System.out.println("Duplicates:" + duplicates.size());
