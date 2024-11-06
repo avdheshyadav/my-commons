@@ -25,16 +25,14 @@ public class IdGenInitializationWorker implements Callable<ArrayList<SnfId>> {
         this.name = name;
     }
 
-
     @Override
     public ArrayList<SnfId> call() throws Exception {
-        System.out.println("*************");
+        System.out.println("Thread:" + name);
         try {
             latch.await();
             for (int i = 0; i < noOfIds; i++) {
                 Long id = SnfIdGen.getId();
                 SnfId snfId = SnfIdGen.getSnfId(id);
-                //System.out.println("id:" + id + "  " + snfId + " created in thread: " + name);
                 idList.add(snfId);
             }
         } catch (Exception e) {

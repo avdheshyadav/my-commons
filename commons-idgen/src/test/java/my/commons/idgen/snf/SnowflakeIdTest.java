@@ -18,10 +18,8 @@ public class SnowflakeIdTest {
 
     public static void initTest() throws Exception {
         CountDownLatch idInitLatch = new CountDownLatch(1);
-        int noOfIds = 1;
-
-
-        ExecutorService threadPool = Executors.newFixedThreadPool(5);
+        int noOfIds = 10000;
+        ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
         ArrayList<Future<ArrayList<SnfId>>> futures = new ArrayList<>();
         for(int i = 0; i < 5; i++) {
             Future<ArrayList<SnfId>> future = threadPool.submit(new IdGenInitializationWorker("Worker " + i , idInitLatch, noOfIds ));
@@ -43,11 +41,10 @@ public class SnowflakeIdTest {
                 masterList.add(id);
             }
         }
-        System.out.println("All Data returned");
-
+        threadPool.close();
         System.out.println("Master Size: " + masterList.size());
         System.out.println("Duplicates Size: " + duplicates.size());
-
+        System.out.println("All Data returned");
     }
 
     public static void basic() throws Exception {

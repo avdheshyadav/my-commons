@@ -19,7 +19,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
      * @return Long
      * @throws IdGenException IdGenException
      */
-    public Long createId() throws IdGenException {
+    public synchronized Long createId() throws IdGenException {
         long currentTimeStamp = System.currentTimeMillis();
         if (currentTimeStamp < lastTimestamp) {
             throw new IdGenException("Clock moved backwards.  Refusing to generate id for " + (lastTimestamp - currentTimeStamp) + " milliseconds.");
