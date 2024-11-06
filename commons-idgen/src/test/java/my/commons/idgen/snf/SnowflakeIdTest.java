@@ -1,6 +1,5 @@
 package my.commons.idgen.snf;
 
-
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class SnowflakeIdTest {
         threadPool.close();
         // Group by Duplicates
         List<SnfId> duplicates = masterList.stream()
-                .collect(Collectors.groupingBy(SnfId::hashCode))
+                .collect(Collectors.groupingBy(snfId -> SnfIdGen.getId(snfId)))
                 .entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .flatMap(entry -> entry.getValue().stream())

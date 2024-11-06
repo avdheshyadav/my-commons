@@ -26,7 +26,7 @@ public class SnfIdGen {
         return ID_CREATOR.createId();
     }
 
-    public static Long getId(SnfId snfId) throws IdGenException {
+    public static Long getId(SnfId snfId) {
         return ((snfId.getTimestamp() - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfId.getMachineId() << snfIdConfig.getSequenceBits()) | snfId.getSequence();
     }
 
