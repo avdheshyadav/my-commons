@@ -73,7 +73,6 @@ class IdGenInitializationWorker implements Callable<ArrayList<SnfId>> {
             SnfId snfId = SnfIdGen.getSnfId(id);
             idList.add(snfId);
         }
-
         return idList;
     }
 }
