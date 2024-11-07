@@ -65,18 +65,15 @@ class IdGenInitializationWorker implements Callable<ArrayList<SnfId>> {
     }
 
     @Override
-    public ArrayList<SnfId> call() throws Exception {
+    public ArrayList<SnfId> call() throws InterruptedException {
         System.out.println("Thread:" + name);
-        try {
-            latch.await();
-            for (int i = 0; i < noOfIds; i++) {
-                Long id = SnfIdGen.getId();
-                SnfId snfId = SnfIdGen.getSnfId(id);
-                idList.add(snfId);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        latch.await();
+        for (int i = 0; i < noOfIds; i++) {
+            long id = SnfIdGen.getId();
+            SnfId snfId = SnfIdGen.getSnfId(id);
+            idList.add(snfId);
         }
+
         return idList;
     }
 }

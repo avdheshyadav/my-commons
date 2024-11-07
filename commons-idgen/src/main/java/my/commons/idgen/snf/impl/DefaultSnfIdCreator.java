@@ -1,6 +1,5 @@
 package my.commons.idgen.snf.impl;
 
-import my.commons.idgen.IdGenException;
 import my.commons.idgen.snf.SnfIdConfig;
 import my.commons.idgen.snf.SnfIdCreator;
 
@@ -25,14 +24,13 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
     }
 
     /**
-     * @return Long
-     * @throws IdGenException IdGenException
+     * @return long
      */
-    public synchronized long createId() throws IdGenException {
+    public synchronized long createId() {
         long currentTimeStamp = System.currentTimeMillis();
         long lastTs = lastTimestamp.get();
         if (currentTimeStamp < lastTs) {
-            throw new IdGenException("Clock moved backwards.Refusing to generate id");
+            throw new IllegalStateException("Clock moved backwards.Refusing to generate id");
         }
         if (currentTimeStamp == lastTs) {
             long seq = sequence.incrementAndGet() & sequenceMask;

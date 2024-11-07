@@ -15,11 +15,11 @@ public class SnfIdGen {
     private static SnfIdConfig snfIdConfig;
     private static SnfIdCreator ID_CREATOR;
 
-    public static long getId() throws IdGenException {
+    public static long getId() {
         if (ID_CREATOR == null) {
             try {
                 init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
-            }catch (IdGenException id){
+            } catch (IdGenException id) {
                 System.out.println("Id Creator already initialized");
             }
         }
@@ -37,10 +37,10 @@ public class SnfIdGen {
         return new SnfId(timestamp, machineId, sequence);
     }
 
-    public static void registerIdCreator(SnfIdConfig snfIdConfig) throws Exception {
+    public static void registerIdCreator(SnfIdConfig snfIdConfig) throws IdGenException {
         if (ID_CREATOR == null) {
             init(snfIdConfig);
-        }else{
+        } else {
             System.out.println("Id Creator already initialized.");
         }
     }

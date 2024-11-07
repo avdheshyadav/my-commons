@@ -19,8 +19,6 @@ public class RandomMachineIdProvider implements MachineIdProvider {
 
     @Override
     public long getMachineId(long min, long max) {
-        long machineId = random.nextLong(max - min) + min;
-        System.out.println("Random Machine Id: " + machineId);
-        return machineId;
+        return random.nextLong(max - min) + min;
     }
 }
