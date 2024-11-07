@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DefaultSnfIdCreator implements SnfIdCreator {
     private final long epoch;
-    private final long machineIdBits;
     private final long machineId;
     private final long sequenceBits;
     private final long sequenceMask;
@@ -19,11 +18,10 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
 
     public DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.epoch = snfIdConfig.getEpoch();
-        this.machineIdBits = snfIdConfig.getMachineIdBits();
         this.machineId = snfIdConfig.getMachineId();
         this.sequenceBits = snfIdConfig.getSequenceBits();
         this.sequenceMask = snfIdConfig.getSequenceMask();
-        this.timeStampLeftShift = machineIdBits + sequenceBits;
+        this.timeStampLeftShift = snfIdConfig.getMachineIdBits() + sequenceBits;
     }
 
     /**

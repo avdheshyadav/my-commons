@@ -30,7 +30,7 @@ public class SnfIdGen {
         return ((snfId.getTimestamp() - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfId.getMachineId() << snfIdConfig.getSequenceBits()) | snfId.getSequence();
     }
 
-    public static SnfId getSnfId(Long id) throws IdGenException {
+    public static SnfId getSnfId(Long id) {
         long timestamp = (id >> (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) + snfIdConfig.getEpoch();
         long machineId = (id & ((1L << snfIdConfig.getMachineIdBits()) - 1) << snfIdConfig.getSequenceBits()) >> snfIdConfig.getSequenceBits();
         long sequence = id & snfIdConfig.getSequenceMask();
