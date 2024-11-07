@@ -14,7 +14,7 @@ public class SnowflakeIdTest {
 
     public static void initTest() throws Exception {
         CountDownLatch idInitLatch = new CountDownLatch(1);
-        int noOfIds = 10000;
+        int noOfIds = 1_00_000;
         ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
         ArrayList<Future<ArrayList<SnfId>>> futures = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -48,5 +48,35 @@ public class SnowflakeIdTest {
         System.out.println("Master Size: " + masterList.size());
         System.out.println("Duplicates:" + duplicates.size());
         System.out.println("All Data returned");
+    }
+}
+
+class IdGenInitializationWorker implements Callable<ArrayList<SnfId>> {
+    private final CountDownLatch latch;
+    private final int noOfIds;
+    private final ArrayList<SnfId> idList;
+    private final String name;
+
+    public IdGenInitializationWorker(String name, CountDownLatch latch, int noOfIds) {
+        this.latch = latch;
+        this.noOfIds = noOfIds;
+        this.idList = new ArrayList<>(noOfIds);
+        this.name = name;
+    }
+
+    @Override
+    public ArrayList<SnfId> call() throws Exception {
+        System.out.println("Thread:" + name);
+        try {
+            latch.await();
+            for (int i = 0; i < noOfIds; i++) {
+                Long id = SnfIdGen.getId();
+                SnfId snfId = SnfIdGen.getSnfId(id);
+                idList.add(snfId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idList;
     }
 }

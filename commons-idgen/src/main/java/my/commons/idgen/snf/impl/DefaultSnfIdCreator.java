@@ -28,7 +28,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
      * @return Long
      * @throws IdGenException IdGenException
      */
-    public synchronized Long createId() throws IdGenException {
+    public synchronized long createId() throws IdGenException {
         long currentTimeStamp = System.currentTimeMillis();
         long lastTs = lastTimestamp.get();
         if (currentTimeStamp < lastTs) {

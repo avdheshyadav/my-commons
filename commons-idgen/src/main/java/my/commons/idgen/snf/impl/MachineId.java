@@ -10,13 +10,12 @@ import my.commons.idgen.snf.MachineIdProvider;
  * @author Avdhesh Yadav
  * 04/11/24
  */
+@Getter
 public class MachineId {
     public static final long DEF_MACHINE_ID_BITS = 10;
     public static final MachineId DEF_MACHINE_ID = new MachineId(DEF_MACHINE_ID_BITS,RandomMachineIdProvider.INSTANCE);
 
-    @Getter
     private final long machineIdBits;
-    @Getter
     private final long machineId;
 
     /**

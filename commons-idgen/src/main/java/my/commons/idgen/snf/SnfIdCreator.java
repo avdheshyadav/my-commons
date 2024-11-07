@@ -7,5 +7,5 @@ import my.commons.idgen.IdGenException;
 
 public interface SnfIdCreator {
 
-    Long createId() throws IdGenException;
+    long createId() throws IdGenException;
 }

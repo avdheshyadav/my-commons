@@ -15,7 +15,7 @@ public class SnfIdGen {
     private static SnfIdConfig snfIdConfig;
     private static SnfIdCreator ID_CREATOR;
 
-    public static Long getId() throws IdGenException {
+    public static long getId() throws IdGenException {
         if (ID_CREATOR == null) {
             try {
                 init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
@@ -26,11 +26,11 @@ public class SnfIdGen {
         return ID_CREATOR.createId();
     }
 
-    public static Long getId(SnfId snfId) {
+    public static long getId(SnfId snfId) {
         return ((snfId.getTimestamp() - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfId.getMachineId() << snfIdConfig.getSequenceBits()) | snfId.getSequence();
     }
 
-    public static SnfId getSnfId(Long id) {
+    public static SnfId getSnfId(long id) {
         long timestamp = (id >> (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) + snfIdConfig.getEpoch();
         long machineId = (id & ((1L << snfIdConfig.getMachineIdBits()) - 1) << snfIdConfig.getSequenceBits()) >> snfIdConfig.getSequenceBits();
         long sequence = id & snfIdConfig.getSequenceMask();
