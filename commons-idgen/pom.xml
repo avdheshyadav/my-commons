@@ -11,7 +11,9 @@
 
     <properties>
         <java.version>23</java.version>
+        <skipTests>true</skipTests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.proc>full</maven.compiler.proc>
     </properties>
 
     <dependencies>
@@ -19,6 +21,12 @@
             <groupId>com.github.f4b6a3</groupId>
             <artifactId>ulid-creator</artifactId>
             <version>5.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -32,6 +40,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
                     <source>23</source>
                     <target>23</target>
