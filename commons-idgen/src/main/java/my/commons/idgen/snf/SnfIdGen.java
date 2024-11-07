@@ -3,7 +3,6 @@
  */
 package my.commons.idgen.snf;
 
-import my.commons.idgen.IdGenException;
 import my.commons.idgen.snf.impl.DefaultSnfIdConfigImpl;
 import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
 
@@ -12,46 +11,37 @@ import my.commons.idgen.snf.impl.DefaultSnfIdCreator;
  * 04/11/24
  */
 public class SnfIdGen {
-    private static SnfIdConfig snfIdConfig;
+
     private static SnfIdCreator ID_CREATOR;
 
     public static long getId() {
         if (ID_CREATOR == null) {
-            try {
-                init(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
-            } catch (IdGenException id) {
-                System.out.println("Id Creator already initialized");
-            }
+            registerDefaultIdCreator(DefaultSnfIdConfigImpl.DEFAULT_CONFIG);
         }
         return ID_CREATOR.createId();
     }
 
     public static long getId(SnfId snfId) {
-        return ((snfId.getTimestamp() - snfIdConfig.getEpoch()) << (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) | (snfId.getMachineId() << snfIdConfig.getSequenceBits()) | snfId.getSequence();
+        return ID_CREATOR.getId(snfId);
     }
 
     public static SnfId getSnfId(long id) {
-        long timestamp = (id >> (snfIdConfig.getMachineIdBits() + snfIdConfig.getSequenceBits())) + snfIdConfig.getEpoch();
-        long machineId = (id & ((1L << snfIdConfig.getMachineIdBits()) - 1) << snfIdConfig.getSequenceBits()) >> snfIdConfig.getSequenceBits();
-        long sequence = id & snfIdConfig.getSequenceMask();
-        return new SnfId(timestamp, machineId, sequence);
+        return ID_CREATOR.getSnfId(id);
     }
 
-    public static void registerIdCreator(SnfIdConfig snfIdConfig) throws IdGenException {
+    public synchronized static void registerDefaultIdCreator(SnfIdConfig snfIdConfig) {
         if (ID_CREATOR == null) {
-            init(snfIdConfig);
+            ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
         } else {
             System.out.println("Id Creator already initialized.");
         }
     }
 
-    private synchronized static void init(SnfIdConfig snfIdConfig) throws IdGenException {
+    public synchronized static void registerIdCreator(SnfIdCreator idCreator) {
         if (ID_CREATOR == null) {
-            SnfIdGen.snfIdConfig = snfIdConfig;
-            ID_CREATOR = new DefaultSnfIdCreator(snfIdConfig);
-            System.out.println("Id Creator initialized By: " + Thread.currentThread().getName());
+            ID_CREATOR = idCreator;
         } else {
-            throw new IdGenException("IdGen already registered");
+            System.out.println("Id Creator already initialized.");
         }
     }
 }

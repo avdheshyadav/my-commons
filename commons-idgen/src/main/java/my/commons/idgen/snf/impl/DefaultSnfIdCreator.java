@@ -1,5 +1,6 @@
 package my.commons.idgen.snf.impl;
 
+import my.commons.idgen.snf.SnfId;
 import my.commons.idgen.snf.SnfIdConfig;
 import my.commons.idgen.snf.SnfIdCreator;
 
@@ -7,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DefaultSnfIdCreator implements SnfIdCreator {
     private final long epoch;
+    private final long machineIdBits;
     private final long machineId;
     private final long sequenceBits;
     private final long sequenceMask;
@@ -17,6 +19,7 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
 
     public DefaultSnfIdCreator(SnfIdConfig snfIdConfig) {
         this.epoch = snfIdConfig.getEpoch();
+        this.machineIdBits = snfIdConfig.getMachineIdBits();
         this.machineId = snfIdConfig.getMachineId();
         this.sequenceBits = snfIdConfig.getSequenceBits();
         this.sequenceMask = snfIdConfig.getSequenceMask();
@@ -43,6 +46,19 @@ public class DefaultSnfIdCreator implements SnfIdCreator {
         }
         lastTimestamp.set(currentTimeStamp);
         return ((currentTimeStamp - epoch) << timeStampLeftShift) | (machineId << sequenceBits) | sequence.get();
+    }
+
+    @Override
+    public SnfId getSnfId(long id) {
+        long timestamp = (id >> (machineIdBits + sequenceBits)) + epoch;
+        long machineId = (id & ((1L << machineIdBits) - 1) << sequenceBits) >> sequenceBits;
+        long sequence = id & sequenceMask;
+        return new SnfId(timestamp, machineId, sequence);
+    }
+
+    @Override
+    public long getId(SnfId snfId) {
+        return ((snfId.getTimestamp() - epoch) << timeStampLeftShift) | (snfId.getMachineId() << sequenceBits) | snfId.getSequence();
     }
 
     private long tilNextMillis(long lastTimestamp) {

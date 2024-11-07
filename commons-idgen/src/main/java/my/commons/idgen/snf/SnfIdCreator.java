@@ -6,4 +6,8 @@ package my.commons.idgen.snf;
 public interface SnfIdCreator {
 
     long createId();
+
+    SnfId getSnfId(long id);
+
+    long getId(SnfId snfId);
 }
