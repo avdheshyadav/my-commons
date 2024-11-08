@@ -23,4 +23,13 @@
 hs_err_pid*
 replay_pid*
 
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
 .DS_Store
