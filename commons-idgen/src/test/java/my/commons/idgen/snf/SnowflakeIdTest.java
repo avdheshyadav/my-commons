@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2024 Avdhesh Yadav. All rights reserved.
+ */
 package my.commons.idgen.snf;
 
 import java.util.*;
